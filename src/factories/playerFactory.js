@@ -1,21 +1,25 @@
-import Gameboard from "./gameboardFactory";
+import Gameboard from './gameboardFactory';
 
 class Player {
   constructor() {
     this.gameboard = new Gameboard();
   }
 
-  isValidAttack(player, x, y) { //eslint-disable-line
-    if (!(player.gameboard.misses[y][x])) {
+  isValidAttack(player, x, y) {     //eslint-disable-line
+    if (!player.gameboard.misses[y][x]) {
       if (player.gameboard.board[y][x]) {
-        if (player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]) return false;
+        if (
+          player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]
+        ) {
+          return false;
+        }
       }
       return true;
     }
     return false;
   }
 
-  attack(player, x, y) { //eslint-disable-line
+  attack(player, x, y) {
     if (this.isValidAttack(player, x, y)) {
       player.gameboard.receiveAttack(x, y);
     }
@@ -34,7 +38,6 @@ class Player {
       }
     }
   }
-
 }
 
 export default Player;

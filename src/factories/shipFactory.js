@@ -10,17 +10,16 @@ class Ship {
 
   isSunk() {
     let numHits = 0;
-    this.hits.forEach((element => {
+    this.hits.forEach((element) => {
       if (element === 'hit') {
         numHits += 1;
       }
-    }));
+    });
     if (numHits === this.length) {
       return true;
-    } 
+    }
     return false;
   }
-
 }
 
 export default Ship;

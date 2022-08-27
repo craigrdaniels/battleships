@@ -1,6 +1,5 @@
 import './styles.css';
 
-const startApp = () => {
-};
+const startApp = () => {};
 
 startApp();

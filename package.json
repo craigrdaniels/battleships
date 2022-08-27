@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --watch",
     "build": "NODE_ENV=production webpack",
-    "lint": "eslint --fix -ext .js .jsx .",
+    "lint": "eslint --fix --ext .js ./src/",
     "dev": "NODE_ENV=development webpack-dev-server --hot"
   },
   "keywords": [],

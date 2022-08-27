@@ -7,7 +7,10 @@ class Gameboard {
   }
 
   isValidPosition(ship, x, y, isHorizontal) { //eslint-disable-line
-    if ((isHorizontal === true && x + ship.length > SIZE) || (isHorizontal === false && y  + ship.length > SIZE)) {
+    if (
+      (isHorizontal === true && x + ship.length > SIZE) ||
+      (isHorizontal === false && y + ship.length > SIZE)
+    ) {
       return false;
     }
     return true;
@@ -19,7 +22,7 @@ class Gameboard {
 
     // places horizontal - toadd vertical placement
     if (isHorizontal === true) {
-      for (let i = 0; i < ship.length; i += 1){
+      for (let i = 0; i < ship.length; i += 1) {
         this.board[y][x + i] = ship;
       }
     }
@@ -45,7 +48,7 @@ class Gameboard {
     for (let i = 1; i < this.board[y][x].length; i += 1) {
       if (y - i >= 0) {
         if (this.board[y - i][x] === this.board[y][x]) {
-            hitIndex += 1;
+          hitIndex += 1;
         }
       }
     }
@@ -65,7 +68,7 @@ class Gameboard {
     for (let i = 0; i < SIZE; i += 1) {
       for (let j = 0; j < SIZE; j += 1) {
         if (this.board[i][j]) {
-          if (!(this.board[i][j].isSunk())) {
+          if (!this.board[i][j].isSunk()) {
             return false;
           }
         }
@@ -73,7 +76,6 @@ class Gameboard {
     }
     return true;
   }
-
 }
 
 export default Gameboard;
