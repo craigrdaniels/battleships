@@ -2,9 +2,8 @@ import Gameboard from "../src/factories/gameboardFactory";
 import Ship from "../src/factories/shipFactory";
 
 describe('Test Gameboard', () => {
-  let theGameboard = new Gameboard();
-  let theShip = new Ship(4);
-
+  const theGameboard = new Gameboard();
+  const theShip = new Ship(4);
 
   test('ship is added', () => {
     theGameboard.placeShip(theShip, 0, 0, true);
@@ -28,4 +27,10 @@ describe('Test Gameboard', () => {
     expect(theGameboard.allShipsSunk()).toBe(true);
   });
 
+  test('valid ship positions', () => {
+    expect(theGameboard.isValidPosition(theShip, 6, 7, true)).toBe(true);
+    expect(theGameboard.isValidPosition(theShip, 6, 7, false)).toBe(false);
+    expect(theGameboard.isValidPosition(theShip, 7, 6, true)).toBe(false);
+    expect(theGameboard.isValidPosition(theShip, 7, 6, false)).toBe(true);
+  });
 });

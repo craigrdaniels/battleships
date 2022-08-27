@@ -1,5 +1,3 @@
-import Ship from "./shipFactory";
-
 const SIZE = 10;
 
 class Gameboard {
@@ -8,10 +6,16 @@ class Gameboard {
     this.misses = Array.from(Array(SIZE), () => new Array(SIZE));
   }
 
+  isValidPosition(ship, x, y, isHorizontal) { //eslint-disable-line
+    if ((isHorizontal === true && x + ship.length > SIZE) || (isHorizontal === false && y  + ship.length > SIZE)) {
+      return false;
+    }
+    return true;
+  }
 
   placeShip(ship, x, y, isHorizontal) {
     // check if posisble to place peice
-
+    if (!this.isValidPosition(ship, x, y, isHorizontal)) return;
 
     // places horizontal - toadd vertical placement
     if (isHorizontal === true) {
@@ -25,36 +29,36 @@ class Gameboard {
         this.board[y + i][x] = ship;
       }
     }
+  }
 
+  getShipIndex(x, y) {
+    let hitIndex = 0;
+    // check horizontal
+    for (let i = 1; i < this.board[y][x].length; i += 1) {
+      if (x - i >= 0) {
+        if (this.board[y][x - i] === this.board[y][x]) {
+          hitIndex += 1;
+        }
+      }
+    }
+    // check vertical
+    for (let i = 1; i < this.board[y][x].length; i += 1) {
+      if (y - i >= 0) {
+        if (this.board[y - i][x] === this.board[y][x]) {
+            hitIndex += 1;
+        }
+      }
+    }
+    return hitIndex;
   }
 
   receiveAttack(x, y) {
-
     // check if hit a ship
     if (this.board[y][x]) {
-      let hitIndex = 0;
-      // check horizontal
-      for (let i = 1; i < this.board[y][x].length; i += 1) {
-        if (x - i >= 0) {
-          if (this.board[y][x - i] === this.board[y][x]) {
-            hitIndex += 1;
-          }
-        }
-      }
-      // check vertical
-      for (let i = 1; i < this.board[y][x].length; i += 1) {
-        if (y - i >= 0) {
-          if (this.board[y - i][x] === this.board[y][x]) {
-              hitIndex += 1;
-          }
-        }
-      }
-      this.board[y][x].hit(hitIndex);
+      this.board[y][x].hit(this.getShipIndex(x, y));
     } else {
       this.misses[y][x] = 'miss';
     }
-
-
   }
 
   allShipsSunk() {
