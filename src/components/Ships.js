@@ -1,9 +1,15 @@
-const Ships = {
-  'Carrier': { length: 5 },
-  'Battleship': { length: 4 },
-  'Cruiser': { length: 3 },
-  'Submarine': {  length: 3 },
-  'Destroyer': { length: 2 },
-};
+export const SHIP_TYPES = [
+  'Carrier',
+  'Battleship',
+  'Cruiser',
+  'Submarine',
+  'Destroyer'
+];
 
-export default Ships;
+export const SHIP_LENGTHS = {
+  Carrier: 5,
+  Battleship: 4,
+  Cruiser: 3,
+  Submarine: 3,
+  Destroyer: 2,
+}

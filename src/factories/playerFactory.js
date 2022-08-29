@@ -8,9 +8,7 @@ class Player {
   isValidAttack(player, x, y) {     //eslint-disable-line
     if (!player.gameboard.misses[y][x]) {
       if (player.gameboard.board[y][x]) {
-        if (
-          player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]
-        ) {
+        if (player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]) {
           return false;
         }
       }
@@ -25,12 +23,13 @@ class Player {
     }
   }
 
+  // For now just attack randomly
+  // ToDo: add intelligence to pick around a 'hit' for less turns
   attackRandom(player) {
     let success = false;
     while (success === false) {
-      // assuming both players have the same board size
-      const x = Math.floor(Math.random() * this.gameboard.board[0].length);
-      const y = Math.floor(Math.random() * this.gameboard.board.length);
+      const x = Math.floor(Math.random() * player.gameboard.board[0].length);
+      const y = Math.floor(Math.random() * player.gameboard.board.length);
 
       if (this.isValidAttack(player, x, y)) {
         this.attack(player, x, y);
