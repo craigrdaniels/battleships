@@ -1,6 +1,9 @@
+import { SHIP_TYPES, SHIP_LENGTHS } from "../components/Ships";
+
 class Ship {
-  constructor(length) {
-    this.length = length;
+  constructor(id) {
+    this.type = SHIP_TYPES[id];
+    this.length = SHIP_LENGTHS[this.type];
     this.hits = [];
   }
 

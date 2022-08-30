@@ -3,7 +3,7 @@ import Ship from "../src/factories/shipFactory";
 
 describe('Test Gameboard', () => {
   const theGameboard = new Gameboard();
-  const theShip = new Ship(4);
+  const theShip = new Ship(1);
 
   test('ship is added', () => {
     theGameboard.placeShip(theShip, 0, 0, true);
@@ -28,9 +28,14 @@ describe('Test Gameboard', () => {
   });
 
   test('valid ship positions', () => {
+    // check edge of gameboard
     expect(theGameboard.isValidPosition(theShip, 6, 7, true)).toBe(true);
     expect(theGameboard.isValidPosition(theShip, 6, 7, false)).toBe(false);
     expect(theGameboard.isValidPosition(theShip, 7, 6, true)).toBe(false);
     expect(theGameboard.isValidPosition(theShip, 7, 6, false)).toBe(true);
+
+    // check for overlapping ships
+    expect(theGameboard.isValidPosition(theShip, 1, 0, true)).toBe(false);
+    expect(theGameboard.isValidPosition(theShip, 1, 0, false)).toBe(false);
   });
 });

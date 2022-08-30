@@ -6,15 +6,14 @@ class Player {
   }
 
   isValidAttack(player, x, y) {     //eslint-disable-line
-    if (!player.gameboard.misses[y][x]) {
-      if (player.gameboard.board[y][x]) {
-        if (player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]) {
-          return false;
-        }
+    if (player.gameboard.misses[y][x]) return false;
+  
+    if (player.gameboard.board[y][x]) {
+      if (player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]) {
+        return false;
       }
-      return true;
     }
-    return false;
+    return true;
   }
 
   attack(player, x, y) {

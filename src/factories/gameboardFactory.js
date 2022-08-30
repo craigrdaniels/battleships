@@ -7,12 +7,24 @@ class Gameboard {
   }
 
   isValidPosition(ship, x, y, isHorizontal) { //eslint-disable-line
-    if (
-      (isHorizontal === true && x + ship.length > SIZE) ||
-      (isHorizontal === false && y + ship.length > SIZE)
-    ) {
-      return false;
+    // check horizontal overlapping ships & not off gameboard edge
+    if (isHorizontal === true) {
+      if (x + ship.length > SIZE) return false;
+
+      for (let i = 0; i < ship.length; i += 1) {
+        if (this.board[y][x + i]) return false;
+      }
     }
+
+    // check vertical overlapping ships & not off gameboard edge
+    if (isHorizontal === false) {
+      if (y + ship.length > SIZE) return false;
+
+      for (let i = 0; i < ship.length; i += 1) {
+        if (this.board[y + i][x]) return false;
+      }
+    }    
+
     return true;
   }
 

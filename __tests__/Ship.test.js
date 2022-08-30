@@ -1,7 +1,7 @@
 import Ship from "../src/factories/shipFactory";
 
 describe('Test Ship Factory', () => {
-  const theShip = new Ship(5);
+  const theShip = new Ship(0);
 
   test('the length', () => {
     expect(theShip.length).toEqual(5);

@@ -1,6 +1,6 @@
 import Player from "./playerFactory";
 import Ship from "./shipFactory";
-import { SHIP_TYPES, SHIP_LENGTHS } from "../components/Ships";
+import { SHIP_TYPES } from "../components/Ships";
 
 class Game {
   constructor() {
@@ -9,13 +9,20 @@ class Game {
     this.players[1] = new Player();
   }
 
-  // for now just place ships next to each other, vertically all at y-index 0
-  // ToDo: place randomly - checking ships are not overlapping or off board edge
-  placeShips() {
-    this.players.forEach((player) => {
-      SHIP_TYPES.forEach((ship, index) => {
-        player.gameboard.placeShip(new Ship(SHIP_LENGTHS[ship]), index, 0, false);
-      });
+  placeRandomShips(player) {
+    SHIP_TYPES.forEach((ship, index) => {
+      const theShip = new Ship(index);
+      let success = false;
+      while(!success){
+        const isHorizontal = Math.random() < 0.5;
+        const x = Math.floor(Math.random() * player.gameboard.board[0].length);
+        const y = Math.floor(Math.random() * player.gameboard.board.length);
+
+        if (player.gameboard.isValidPosition(theShip, x, y, isHorizontal)) {
+          player.gameboard.placeShip(theShip, x, y, isHorizontal);
+          success = true;
+        }
+      }
     });
   }
 

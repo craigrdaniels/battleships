@@ -4,7 +4,7 @@ import Ship from "../src/factories/shipFactory";
 describe('Test Game Factory', () => {
   const theGame = new Game();
   theGame.players.forEach((player) => {
-    player.gameboard.placeShip(new Ship(2), 0, 0, true);
+    player.gameboard.placeShip(new Ship(4), 0, 0, true);
   });
 
   test('Game Over', () => {
@@ -18,14 +18,18 @@ describe('Test Game Factory', () => {
 
   test('Play Game', () => {
     const secondGame = new Game();
-    secondGame.placeShips();
+    secondGame.players.forEach((player) => {
+      secondGame.placeRandomShips(player);
+    });
 
+    // to do: % by num players to allow for more than 3 
     let turn = 0;
+    const numPlayers = secondGame.players.length;
     while(!(secondGame.isGameOver())) {
-      secondGame.players[turn % 2].attackRandom(secondGame.players[(turn + 1) % 2]);
+      secondGame.players[turn % numPlayers].attackRandom(secondGame.players[(turn + 1) % numPlayers]);
       turn += 1;
     }
-    const winner = ((turn-1) % 2) + 1;
+    const winner = ((turn-1) % numPlayers) + 1;
     console.log("Player %d wins in %d turns!", winner, turn);
   
     expect(turn).toBeGreaterThan(1);
