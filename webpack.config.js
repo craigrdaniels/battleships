@@ -17,7 +17,7 @@ module.exports = {
   plugins: [
     new ESLintPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Battleships',
+      title: 'BattleShip',
       templateContent: `
       <html>
       <head><title>Battleships</title>
