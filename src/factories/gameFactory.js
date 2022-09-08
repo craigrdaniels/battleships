@@ -9,7 +9,7 @@ class Game {
     this.players[1] = new Player();
   }
 
-  placeRandomShips(player) {
+  placeRandomShips(player) { //eslint-disable-line
     SHIP_TYPES.forEach((ship, index) => {
       const theShip = new Ship(index);
       let success = false;
