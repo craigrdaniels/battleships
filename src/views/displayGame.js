@@ -11,6 +11,11 @@ const displayGameTile = (player, x, y) => {
     ['font-["PressStart2P"]', 'bg-white', 'w-8', 'h-8', 'border', 'border-slate-500', 'text-black', 'text-center', 'align-middle'],
     null
   );
+
+  if (player.gameboard.board[y][x] && player.gameboard.board[y][x].isSunk()) {
+    element.classList.remove('text-black')
+    element.classList.add('text-red-500')
+  }
   
   if (player.gameboard.board[y][x] && player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]) {
     element.innerHTML = 'H';
@@ -33,11 +38,22 @@ const displayGameTile = (player, x, y) => {
 
     // only allow player to click on AI board
     element.onclick = () => {
+
       const attackingPlayer = (theGame.players.findIndex((e) => e === player) + 1) % 2;
       if (theGame.players[attackingPlayer].isValidAttack(player, x, y)) {
         theGame.players[attackingPlayer].attack(player, x, y);
+
+        let gameBoardId = "gameboard";
+        gameBoardId += (attackingPlayer + 1) % 2;
+        redrawGameBaord(player, gameBoardId); //eslint-disable-line
+
+
         element.parentNode.replaceChild(displayGameTile(player, x, y), element);
-        newTurn(player);
+
+        // check game over
+        if (theGame.isGameOver()) console.log('GAME OVER'); //eslint-disable-line
+
+        newTurn(player); // let AI have a turn
       }
     }
   }

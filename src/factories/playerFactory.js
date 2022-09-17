@@ -38,7 +38,6 @@ class Player {
   attack(player, x, y) {
     if (this.isValidAttack(player, x, y)) {
       player.gameboard.receiveAttack(x, y);
-      console.log("Attack"); // eslint-disable-line
     }
   }
 
