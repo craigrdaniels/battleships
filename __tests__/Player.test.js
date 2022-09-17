@@ -31,5 +31,12 @@ describe('Test Player', () => {
       }
     }
     expect(count).toBe(2);
-  })
+  });
+
+  test('set turns', () => {
+    player1.setTurn(player2);
+    expect(player1.turn).toBe(true);
+    expect(player2.turn).toBe(false);
+  });
+
 });

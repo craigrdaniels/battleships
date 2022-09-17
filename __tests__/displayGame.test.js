@@ -1,6 +1,7 @@
-import displayGame from '../src/views/displayGame';
+import Game from '../src/factories/gameFactory';
+import { displayGame } from '../src/views/displayGame';
 
 test('game gets displayed', () => {
-  const element = (displayGame());
+  const element = (displayGame(new Game()));
   expect(element.id).toBe('game');
 });

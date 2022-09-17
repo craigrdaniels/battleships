@@ -1,8 +1,23 @@
 import Gameboard from './gameboardFactory';
 
 class Player {
-  constructor() {
+  constructor(isAI = false) {
     this.gameboard = new Gameboard();
+    this.isAI = isAI;
+    this.turn = false;
+  }
+
+  get turn() {
+    return this._turn; //eslint-disable-line
+  }
+
+  set turn(x) {
+    this._turn = x; //eslint-disable-line
+  }
+
+  setTurn(enemy) {
+    this.turn = true;
+    enemy.turn = false; //eslint-disable-line
   }
 
   isValidAttack(player, x, y) {     //eslint-disable-line
@@ -23,6 +38,7 @@ class Player {
   attack(player, x, y) {
     if (this.isValidAttack(player, x, y)) {
       player.gameboard.receiveAttack(x, y);
+      console.log("Attack"); // eslint-disable-line
     }
   }
 

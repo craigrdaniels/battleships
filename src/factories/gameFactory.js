@@ -6,7 +6,7 @@ class Game {
   constructor() {
     this.players = [];
     this.players[0] = new Player();
-    this.players[1] = new Player();
+    this.players[1] = new Player(true);
   }
 
   placeRandomShips(player) { //eslint-disable-line

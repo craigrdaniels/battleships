@@ -1,6 +1,7 @@
-import displayGame from "../views/displayGame";
+import { displayGame } from "../views/displayGame";
 import displayHeader from "../views/displayHeader";
 import createHtmlElement from "./createHtmlElement";
+import { initGame, placeRandomShips, game } from "../components/GameController";
 
 const getElement = (selector, parentNode = document) =>
   parentNode.querySelector(selector);  
@@ -22,8 +23,11 @@ const getElement = (selector, parentNode = document) =>
       null
     );
 
+    initGame();
+    placeRandomShips();
+
     element.appendChild(displayHeader());
-    element.appendChild(displayGame());
+    element.appendChild(displayGame(game));
 
     return element;
   }
