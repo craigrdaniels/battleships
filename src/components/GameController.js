@@ -1,5 +1,6 @@
 import Game from "../factories/gameFactory";
-import { redrawGameBaord } from "../views/displayGame"; //eslint-disable-line
+import { displayGame, displayGameOverModal, redrawGameBoard } from "../views/displayGame"; //eslint-disable-line
+
 
 let game; //eslint-disable-line
 
@@ -21,10 +22,13 @@ const newTurn = (player) => {
     let gameBoardId = "gameboard";
     gameBoardId += (playerIndex + 1) % 2;
 
-    redrawGameBaord(game.players[(playerIndex + 1) % 2], gameBoardId);
+    redrawGameBoard(game.players[(playerIndex + 1) % 2], gameBoardId);
 
     // check game over
-    if (game.isGameOver()) console.log('GAME OVER'); //eslint-disable-line
+    if (game.isGameOver()) {
+      console.log('GAME OVER'); //eslint-disable-line
+      displayGameOverModal();
+    }
 
   }
 }

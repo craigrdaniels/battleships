@@ -19,7 +19,13 @@ const getElement = (selector, parentNode = document) =>
     const element = createHtmlElement(
       'div',
       null,
-      ['flex', 'flex-col', 'w-full', 'content-center', 'gap-8'],
+      [
+        'flex',
+        'flex-col',
+        'w-full',
+        'content-center',
+        'gap-8'
+      ],
       null
     );
 

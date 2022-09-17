@@ -4,11 +4,50 @@ import createHtmlElement from "../handlers/createHtmlElement"
 
 let theGame;
 
+const displayGameOverModal = () => {
+  const element = createHtmlElement(
+    'div',
+    'game-over-modal',
+    [
+      'font-["PressStart2P"]',
+      'sm:flex',
+      'items-center',
+      'justify-center',
+      'fixed',
+      'z-10',
+      'inset-0',
+      'w-full',
+      'h-full',
+      'overflow-y-auto',
+      'bg-gray-500',
+      'bg-opacity-75'
+    ],
+    'GAME OVER'
+  );
+  document.body.appendChild(element);
+
+  window.onclick = (event) => {
+    if (event.target === element) {
+      document.body.removeChild(element);
+    }
+  };
+};
+
 const displayGameTile = (player, x, y) => {
   const element = createHtmlElement(
     'div',
     null,
-    ['font-["PressStart2P"]', 'bg-white', 'w-8', 'h-8', 'border', 'border-slate-500', 'text-black', 'text-center', 'align-middle'],
+    [
+      'font-["PressStart2P"]',
+      'bg-white',
+      'w-8',
+      'h-8',
+      'border',
+      'border-slate-500',
+      'text-black',
+      'text-center',
+      'align-middle'
+    ],
     null
   );
 
@@ -51,9 +90,13 @@ const displayGameTile = (player, x, y) => {
         element.parentNode.replaceChild(displayGameTile(player, x, y), element);
 
         // check game over
-        if (theGame.isGameOver()) console.log('GAME OVER'); //eslint-disable-line
+        if (theGame.isGameOver()) {
+          displayGameOverModal();
+          console.log('GAME OVER'); //eslint-disable-line
+        } else {
+          newTurn(player); // let AI have a turn
+        }
 
-        newTurn(player); // let AI have a turn
       }
     }
   }
@@ -70,7 +113,12 @@ const displayGameBoard = (player) => {
   const element = createHtmlElement(
     'div',
     gameBoardId,
-    ['grid', 'grid-cols-10', 'grid-rows-10', 'min-w-content'],
+    [
+      'grid',
+      'grid-cols-10',
+      'grid-rows-10',
+      'min-w-content'
+    ],
     null
   )
   for (let i = 0; i < player.gameboard.board.length; i += 1) {
@@ -82,7 +130,7 @@ const displayGameBoard = (player) => {
   return element;
 }
 
-const redrawGameBaord = (player, id) => {
+const redrawGameBoard = (player, id) => {
   const theBoard = document.getElementById(id);
   theBoard.parentNode.replaceChild(displayGameBoard(player), theBoard);
 }
@@ -93,7 +141,13 @@ const displayGame = (game) => {
   const element = createHtmlElement(
     'div',
     'game',
-    ['flex', 'flex-wrap-reverse', 'w-full', 'justify-center', 'gap-8'],
+    [
+      'flex',
+      'flex-wrap-reverse',
+      'w-full',
+      'justify-center',
+      'gap-8'
+    ],
     null
   );
 
@@ -104,4 +158,4 @@ const displayGame = (game) => {
 
   }
 
-  export {displayGame, redrawGameBaord}
+  export {displayGame, displayGameOverModal, redrawGameBoard}
