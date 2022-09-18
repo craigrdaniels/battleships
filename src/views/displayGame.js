@@ -31,7 +31,7 @@ const displayGameOverModal = () => {
     'game-over-modal',
     [
       'font-["PressStart2P"]',
-      'sm:flex',
+      'flex',
       'items-center',
       'justify-center',
       'fixed',
@@ -66,13 +66,14 @@ const displayGameTile = (player, x, y) => {
     [
       'font-["PressStart2P"]',
       'bg-white',
+      'flex',
       'w-8',
       'h-8',
       'border',
       'border-slate-500',
       'text-black',
-      'text-center',
-      'align-middle'
+      'items-center',
+      'justify-center'
     ],
     null
   );
@@ -83,18 +84,20 @@ const displayGameTile = (player, x, y) => {
   }
   
   if (player.gameboard.board[y][x] && player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]) {
-    element.innerHTML = 'H';
+    element.innerHTML = 'X';
+    element.classList.add('bg-blue-200');
+
     return element;
   }
   
   if (player.gameboard.misses[y][x]) {
-      element.innerHTML = '.';
+      element.innerHTML = '•';
       return element;
   }
 
   if (player.isAI === false) {
     if (player.gameboard.board[y][x]) {
-      element.innerHTML = 'X';
+      element.classList.add('bg-blue-200');
       return element;
     }
   } else {
@@ -179,6 +182,8 @@ const displayGame = (game) => {
 
   element.appendChild(displayGameBoard(theGame.players[1]));
   element.appendChild(displayGameBoard(theGame.players[0]));
+
+  // element.appendChild(displayGameOverModal());
 
   return element;
 
