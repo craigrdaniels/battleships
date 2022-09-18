@@ -1,8 +1,29 @@
 // import Game from "../factories/gameFactory";
-import { newTurn } from "../components/GameController"; //eslint-disable-line
+import { initGame, newTurn, placeRandomShips } from "../components/GameController"; //eslint-disable-line
 import createHtmlElement from "../handlers/createHtmlElement"
 
 let theGame;
+
+const displayGameOverModalContent = () => {
+  const element = createHtmlElement(
+    'div',
+    null,
+    [
+      'font-["PressStart2P"]',
+      'text-white',
+      'bg-black',
+      'bg-opacity-50',
+      'flex',
+      'w-full',
+      'h-24',
+      'justify-center',
+      'items-center'
+    ],
+    'GAME OVER'
+  );
+
+  return element;
+};
 
 const displayGameOverModal = () => {
   const element = createHtmlElement(
@@ -22,12 +43,17 @@ const displayGameOverModal = () => {
       'bg-gray-500',
       'bg-opacity-75'
     ],
-    'GAME OVER'
+    null
   );
   document.body.appendChild(element);
 
+  element.appendChild(displayGameOverModalContent());
+
   window.onclick = (event) => {
     if (event.target === element) {
+      theGame = initGame();
+      const game = document.getElementById('game');
+      game.parentNode.replaceChild(displayGame(theGame), game); // eslint-disable-line
       document.body.removeChild(element);
     }
   };
@@ -84,7 +110,7 @@ const displayGameTile = (player, x, y) => {
 
         let gameBoardId = "gameboard";
         gameBoardId += (attackingPlayer + 1) % 2;
-        redrawGameBaord(player, gameBoardId); //eslint-disable-line
+        redrawGameBoard(player, gameBoardId); //eslint-disable-line
 
 
         element.parentNode.replaceChild(displayGameTile(player, x, y), element);

@@ -4,14 +4,16 @@ import { displayGame, displayGameOverModal, redrawGameBoard } from "../views/dis
 
 let game; //eslint-disable-line
 
-const initGame = () => {
-  game = new Game();
-  game.players[0].setTurn(game.players[1]);
-}
-
 const placeRandomShips = () => {
   // for now place random ships
   game.players.forEach((player) => game.placeRandomShips(player));
+}
+
+const initGame = () => {
+  game = new Game();
+  game.players[0].setTurn(game.players[1]);
+  placeRandomShips();
+  return game;
 }
 
 const newTurn = (player) => { 
