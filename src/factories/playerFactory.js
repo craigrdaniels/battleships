@@ -1,10 +1,11 @@
 import Gameboard from './gameboardFactory';
 
 class Player {
-  constructor(isAI = false) {
+  constructor(name = "Player", isAI = false) {
     this.gameboard = new Gameboard();
     this.isAI = isAI;
     this.turn = false;
+    this.name = name;
   }
 
   get turn() {

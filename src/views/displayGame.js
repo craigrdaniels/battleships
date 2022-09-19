@@ -59,6 +59,22 @@ const displayGameOverModal = () => {
   };
 };
 
+const displayGameBoardTitle = (player) => { //eslint-disable-line
+  const element = createHtmlElement(
+    'div',
+    null,
+    [
+      'font-["PressStart2P"]',
+      'col-span-10'
+    ],
+    null
+  )
+
+  element.innerHTML = player.name;
+
+  return element;
+}
+
 const displayGameTile = (player, x, y) => {
   const element = createHtmlElement(
     'div',
@@ -121,7 +137,6 @@ const displayGameTile = (player, x, y) => {
         // check game over
         if (theGame.isGameOver()) {
           displayGameOverModal();
-          console.log('GAME OVER'); //eslint-disable-line
         } else {
           newTurn(player); // let AI have a turn
         }
@@ -145,16 +160,21 @@ const displayGameBoard = (player) => {
     [
       'grid',
       'grid-cols-10',
-      'grid-rows-10',
+      'grid-rows-11',
       'min-w-content'
     ],
     null
   )
+
+  element.appendChild(displayGameBoardTitle(player));
+
+
   for (let i = 0; i < player.gameboard.board.length; i += 1) {
     for (let j = 0; j< player.gameboard.board[0].length; j += 1) {
       element.appendChild(displayGameTile(player, j, i));
     }
   }
+
 
   return element;
 }

@@ -5,8 +5,8 @@ import { SHIP_TYPES } from "../components/Ships";
 class Game {
   constructor() {
     this.players = [];
-    this.players[0] = new Player();
-    this.players[1] = new Player(true);
+    this.players[0] = new Player("Player");
+    this.players[1] = new Player("Enemy", true);
   }
 
   placeRandomShips(player) { //eslint-disable-line
