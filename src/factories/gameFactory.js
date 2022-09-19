@@ -1,19 +1,19 @@
-import Player from "./playerFactory";
-import Ship from "./shipFactory";
-import { SHIP_TYPES } from "../components/Ships";
+import Player from './playerFactory';
+import Ship from './shipFactory';
+import { SHIP_TYPES } from '../components/Ships';
 
 class Game {
   constructor() {
     this.players = [];
-    this.players[0] = new Player("Player");
-    this.players[1] = new Player("Enemy", true);
+    this.players[0] = new Player('Player');
+    this.players[1] = new Player('Enemy', true);
   }
 
   placeRandomShips(player) { //eslint-disable-line
     SHIP_TYPES.forEach((ship, index) => {
       const theShip = new Ship(index);
       let success = false;
-      while(!success){
+      while (!success) {
         const isHorizontal = Math.random() < 0.5;
         const x = Math.floor(Math.random() * player.gameboard.board[0].length);
         const y = Math.floor(Math.random() * player.gameboard.board.length);
@@ -33,7 +33,6 @@ class Game {
     });
     return gameOver;
   }
-
 }
 
 export default Game;

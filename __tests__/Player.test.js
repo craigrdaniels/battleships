@@ -1,5 +1,5 @@
-import Player from "../src/factories/playerFactory";
-import Ship from "../src/factories/shipFactory";
+import Player from '../src/factories/playerFactory';
+import Ship from '../src/factories/shipFactory';
 
 describe('Test Player', () => {
   const player1 = new Player();
@@ -38,5 +38,4 @@ describe('Test Player', () => {
     expect(player1.turn).toBe(true);
     expect(player2.turn).toBe(false);
   });
-
 });

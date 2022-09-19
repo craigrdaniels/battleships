@@ -6,7 +6,8 @@ class Gameboard {
     this.misses = Array.from(Array(SIZE), () => new Array(SIZE));
   }
 
-  isValidPosition(ship, x, y, isHorizontal) { //eslint-disable-line
+  isValidPosition(ship, x, y, isHorizontal) {
+    //eslint-disable-line
     // check horizontal overlapping ships & not off gameboard edge
     // const z = ship.length;
 
@@ -14,13 +15,14 @@ class Gameboard {
       if (x + ship.length > SIZE) return false;
 
       // check not overlapping / next to a ship
-      if (this.board[y][Math.max(0, x-1)]) return false;
-      if (this.board[y][Math.min((x + ship.length), SIZE - 1)]) return false;
+      if (this.board[y][Math.max(0, x - 1)]) return false;
+      if (this.board[y][Math.min(x + ship.length, SIZE - 1)]) return false;
 
       for (let i = 0; i < ship.length; i += 1) {
         if (this.board[y][x + i]) return false;
-        if (this.board[Math.min(y + 1, this.board.length - 1)][x + i]) return false;
-        if (this.board[Math.max(0, y-1)][x + i]) return false;
+        if (this.board[Math.min(y + 1, this.board.length - 1)][x + i])
+          return false;
+        if (this.board[Math.max(0, y - 1)][x + i]) return false;
       }
     }
 
@@ -29,18 +31,19 @@ class Gameboard {
       if (y + ship.length > SIZE) return false;
 
       if (this.board[Math.max(0, y - 1)][x]) return false;
-      if (this.board[Math.min((y + ship.length), SIZE - 1)][x]) return false;
+      if (this.board[Math.min(y + ship.length, SIZE - 1)][x]) return false;
       // if (this.board[y + ship.length][x]) return false;
       for (let i = 0; i < ship.length; i += 1) {
         if (this.board[y + i][x]) return false;
-        if (this.board[y + i][Math.min(x + 1, this.board[0].length - 1)]) return false;
+        if (this.board[y + i][Math.min(x + 1, this.board[0].length - 1)])
+          return false;
         if (this.board[y + i][Math.max(0, x - 1)]) return false;
       }
 
       for (let i = 0; i < ship.length; i += 1) {
         if (this.board[y + i][x]) return false;
       }
-    }    
+    }
 
     return true;
   }

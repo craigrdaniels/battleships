@@ -1,5 +1,8 @@
 import Game from '../src/factories/gameFactory';
-import { displayGame, displayGameOverModal, redrawGameBoard } from '../src/views/displayGame';
+import {
+  displayGame,
+  displayGameOverModal,
+} from '../src/views/displayGame';
 
 const theGame = new Game();
 const element = displayGame(theGame);

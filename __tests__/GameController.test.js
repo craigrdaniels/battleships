@@ -1,5 +1,5 @@
-import { initGame, game } from "../src/components/GameController";
-import Game from "../src/factories/gameFactory";
+import { initGame, game } from '../src/components/GameController';
+import Game from '../src/factories/gameFactory';
 
 test('initgame', () => {
   initGame();

@@ -1,4 +1,4 @@
-import Ship from "../src/factories/shipFactory";
+import Ship from '../src/factories/shipFactory';
 
 describe('Test Ship Factory', () => {
   const theShip = new Ship(0);
@@ -15,7 +15,7 @@ describe('Test Ship Factory', () => {
       } else {
         expect(element).toBeUndefined(); //eslint-disable-line
       }
-    })    
+    });
   });
 
   test('isSunk', () => {
@@ -27,5 +27,4 @@ describe('Test Ship Factory', () => {
 
     expect(theShip.isSunk()).toBe(true);
   });
-
 });

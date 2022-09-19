@@ -3,7 +3,7 @@ export const SHIP_TYPES = [
   'Battleship',
   'Cruiser',
   'Submarine',
-  'Destroyer'
+  'Destroyer',
 ];
 
 export const SHIP_LENGTHS = {
@@ -12,4 +12,4 @@ export const SHIP_LENGTHS = {
   Cruiser: 3,
   Submarine: 3,
   Destroyer: 2,
-}
+};

@@ -28,7 +28,7 @@ module.exports = {
     </html>
       `,
     }),
-    new MiniCssExtractPlugin()
+    new MiniCssExtractPlugin(),
   ],
   output: {
     filename: '[name].bundle.js',

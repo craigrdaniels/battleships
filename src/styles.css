@@ -18,7 +18,6 @@ body {
   font-family: 'Roboto-Regular', Arial, Helvetica, sans-serif;
 }
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -1,6 +1,6 @@
 // import Game from "../factories/gameFactory";
-import { initGame, newTurn, placeRandomShips } from "../components/GameController"; //eslint-disable-line
-import createHtmlElement from "../handlers/createHtmlElement"
+import {initGame, newTurn, placeRandomShips} from '../components/GameController'; //eslint-disable-line
+import createHtmlElement from '../handlers/createHtmlElement';
 
 let theGame;
 
@@ -17,7 +17,7 @@ const displayGameOverModalContent = () => {
       'w-full',
       'h-24',
       'justify-center',
-      'items-center'
+      'items-center',
     ],
     'GAME OVER'
   );
@@ -41,7 +41,7 @@ const displayGameOverModal = () => {
       'h-full',
       'overflow-y-auto',
       'bg-gray-500',
-      'bg-opacity-75'
+      'bg-opacity-75',
     ],
     null
   );
@@ -59,21 +59,18 @@ const displayGameOverModal = () => {
   };
 };
 
-const displayGameBoardTitle = (player) => { //eslint-disable-line
+const displayGameBoardTitle = (player) => { 
   const element = createHtmlElement(
     'div',
     null,
-    [
-      'font-["PressStart2P"]',
-      'col-span-10'
-    ],
+    ['font-["PressStart2P"]', 'col-span-10'],
     null
-  )
+  );
 
   element.innerHTML = player.name;
 
   return element;
-}
+};
 
 const displayGameTile = (player, x, y) => {
   const element = createHtmlElement(
@@ -89,26 +86,29 @@ const displayGameTile = (player, x, y) => {
       'border-slate-500',
       'text-black',
       'items-center',
-      'justify-center'
+      'justify-center',
     ],
     null
   );
 
   if (player.gameboard.board[y][x] && player.gameboard.board[y][x].isSunk()) {
-    element.classList.remove('text-black')
-    element.classList.add('text-red-500')
+    element.classList.remove('text-black');
+    element.classList.add('text-red-500');
   }
-  
-  if (player.gameboard.board[y][x] && player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]) {
+
+  if (
+    player.gameboard.board[y][x] &&
+    player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]
+  ) {
     element.innerHTML = 'X';
     element.classList.add('bg-blue-200');
 
     return element;
   }
-  
+
   if (player.gameboard.misses[y][x]) {
-      element.innerHTML = '•';
-      return element;
+    element.innerHTML = '•';
+    return element;
   }
 
   if (player.isAI === false) {
@@ -117,20 +117,18 @@ const displayGameTile = (player, x, y) => {
       return element;
     }
   } else {
-
     element.classList.add('hover:bg-gray-400');
 
     // only allow player to click on AI board
     element.onclick = () => {
-
-      const attackingPlayer = (theGame.players.findIndex((e) => e === player) + 1) % 2;
+      const attackingPlayer =
+        (theGame.players.findIndex((e) => e === player) + 1) % 2;
       if (theGame.players[attackingPlayer].isValidAttack(player, x, y)) {
         theGame.players[attackingPlayer].attack(player, x, y);
 
-        let gameBoardId = "gameboard";
+        let gameBoardId = 'gameboard';
         gameBoardId += (attackingPlayer + 1) % 2;
         redrawGameBoard(player, gameBoardId); //eslint-disable-line
-
 
         element.parentNode.replaceChild(displayGameTile(player, x, y), element);
 
@@ -140,63 +138,47 @@ const displayGameTile = (player, x, y) => {
         } else {
           newTurn(player); // let AI have a turn
         }
-
       }
-    }
+    };
   }
 
   return element;
-}
+};
 
 const displayGameBoard = (player) => {
-
   const playerIndex = theGame.players.findIndex((p) => p === player);
-  let gameBoardId = "gameboard";
+  let gameBoardId = 'gameboard';
   gameBoardId += playerIndex;
 
   const element = createHtmlElement(
     'div',
     gameBoardId,
-    [
-      'grid',
-      'grid-cols-10',
-      'grid-rows-11',
-      'min-w-content'
-    ],
+    ['grid', 'grid-cols-10', 'grid-rows-11', 'min-w-content'],
     null
-  )
+  );
 
   element.appendChild(displayGameBoardTitle(player));
 
-
   for (let i = 0; i < player.gameboard.board.length; i += 1) {
-    for (let j = 0; j< player.gameboard.board[0].length; j += 1) {
+    for (let j = 0; j < player.gameboard.board[0].length; j += 1) {
       element.appendChild(displayGameTile(player, j, i));
     }
   }
 
-
   return element;
-}
+};
 
 const redrawGameBoard = (player, id) => {
   const theBoard = document.getElementById(id);
   theBoard.parentNode.replaceChild(displayGameBoard(player), theBoard);
-}
-
+};
 
 const displayGame = (game) => {
   theGame = game;
   const element = createHtmlElement(
     'div',
     'game',
-    [
-      'flex',
-      'flex-wrap-reverse',
-      'w-full',
-      'justify-center',
-      'gap-8'
-    ],
+    ['flex', 'flex-wrap-reverse', 'w-full', 'justify-center', 'gap-8'],
     null
   );
 
@@ -206,7 +188,6 @@ const displayGame = (game) => {
   // element.appendChild(displayGameOverModal());
 
   return element;
+};
 
-  }
-
-  export {displayGame, displayGameOverModal, redrawGameBoard}
+export { displayGame, displayGameOverModal, redrawGameBoard };

@@ -1,4 +1,4 @@
-import { SHIP_TYPES, SHIP_LENGTHS } from "../components/Ships";
+import { SHIP_TYPES, SHIP_LENGTHS } from '../components/Ships';
 
 class Ship {
   constructor(id) {

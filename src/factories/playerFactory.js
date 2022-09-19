@@ -1,7 +1,7 @@
 import Gameboard from './gameboardFactory';
 
 class Player {
-  constructor(name = "Player", isAI = false) {
+  constructor(name = 'Player', isAI = false) {
     this.gameboard = new Gameboard();
     this.isAI = isAI;
     this.turn = false;
@@ -21,15 +21,17 @@ class Player {
     enemy.turn = false; //eslint-disable-line
   }
 
-  isValidAttack(player, x, y) {     //eslint-disable-line
+  isValidAttack(player, x, y) { //eslint-disable-line
     // make sure falls within bounds of gameboard
     if (x < 0 || x >= player.gameboard.board[0].length) return false;
     if (y < 0 || y >= player.gameboard.board.length) return false;
 
     if (player.gameboard.misses[y][x]) return false;
-  
+
     if (player.gameboard.board[y][x]) {
-      if (player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]) {
+      if (
+        player.gameboard.board[y][x].hits[player.gameboard.getShipIndex(x, y)]
+      ) {
         return false;
       }
     }
@@ -48,18 +50,32 @@ class Player {
     for (let i = 0; i < player.gameboard.board[0].length; i += 1) {
       for (let j = 0; j < player.gameboard.board.length; j += 1) {
         if (player.gameboard.board[j][i]) {
-          if (player.gameboard.board[j][i].hits[player.gameboard.getShipIndex(i, j)] === 'hit' && !player.gameboard.board[j][i].isSunk()) {
-
+          if (
+            player.gameboard.board[j][i].hits[
+              player.gameboard.getShipIndex(i, j)
+            ] === 'hit' &&
+            !player.gameboard.board[j][i].isSunk()
+          ) {
             const attackVectors = [
               [-1, 0],
               [0, 1],
               [1, 0],
-              [0, -1]
+              [0, -1],
             ];
 
             for (let k = 0; k < attackVectors.length; k += 1) {
-              if (this.isValidAttack(player, i + attackVectors[k][0], j + attackVectors[k][1])) {
-                this.attack(player, i + attackVectors[k][0], j + attackVectors[k][1]);
+              if (
+                this.isValidAttack(
+                  player,
+                  i + attackVectors[k][0],
+                  j + attackVectors[k][1]
+                )
+              ) {
+                this.attack(
+                  player,
+                  i + attackVectors[k][0],
+                  j + attackVectors[k][1]
+                );
                 return;
               }
             }
@@ -67,7 +83,6 @@ class Player {
         }
       }
     }
-
 
     let success = false;
     while (success === false) {

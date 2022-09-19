@@ -1,5 +1,5 @@
-import Gameboard from "../src/factories/gameboardFactory";
-import Ship from "../src/factories/shipFactory";
+import Gameboard from '../src/factories/gameboardFactory';
+import Ship from '../src/factories/shipFactory';
 
 describe('Test Gameboard', () => {
   const theGameboard = new Gameboard();
@@ -11,9 +11,9 @@ describe('Test Gameboard', () => {
   });
 
   test('receive attack', () => {
-    theGameboard.receiveAttack(5,5);
+    theGameboard.receiveAttack(5, 5);
     expect(theGameboard.misses[5][5]).toBe('miss');
-    theGameboard.receiveAttack(0,0);
+    theGameboard.receiveAttack(0, 0);
     expect(theShip.hits[0]).toBe('hit');
     theGameboard.receiveAttack(1, 0);
     expect(theShip.hits[1]).toBe('hit');
