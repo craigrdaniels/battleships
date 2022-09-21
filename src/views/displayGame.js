@@ -1,8 +1,14 @@
 // import Game from "../factories/gameFactory";
 import {initGame, newTurn, placeRandomShips} from '../components/GameController'; //eslint-disable-line
+import Ship from '../factories/shipFactory';
 import createHtmlElement from '../handlers/createHtmlElement';
 
 let theGame;
+
+const redrawGameBoard = (player, id) => {
+  const theBoard = document.getElementById(id);
+  theBoard.parentNode.replaceChild(displayGameBoard(player), theBoard); //eslint-disable-line
+};
 
 const displayGameOverModalContent = () => {
   const element = createHtmlElement(
@@ -52,27 +58,38 @@ const displayGameOverModal = () => {
   window.onclick = (event) => {
     if (event.target === element) {
       theGame = initGame();
-      const game = document.getElementById('game');
-      game.parentNode.replaceChild(displayGame(theGame), game); // eslint-disable-line
+      // const game = document.getElementById('game');
+      document.getElementById('game').parentNode.replaceChild(displayGame(theGame), document.getElementById('game')); // eslint-disable-line
       document.body.removeChild(element);
     }
   };
 };
 
-const displayGameBoardTitle = (player) => { 
+const displayRotateButton = () => { //eslint-disable-line
+  const element = createHtmlElement(
+    'button',
+    null,
+    ['font-["MaterialSymbols-Outlined"]'],
+    "rotate_right"
+  );
+
+  return element;
+}
+
+const displayGameBoardTitle = (title, showButton = false) => { 
   const element = createHtmlElement(
     'div',
     null,
-    ['font-["PressStart2P"]', 'col-span-10'],
-    null
+    ['font-["PressStart2P"]', 'col-span-10', 'flex', 'justify-between'],
+    title
   );
 
-  element.innerHTML = player.name;
+  if (showButton) element.appendChild(displayRotateButton());
 
   return element;
 };
 
-const displayGameTile = (player, x, y) => {
+const displayGameTile = (player, x, y, placeShips = false) => {
   const element = createHtmlElement(
     'div',
     null,
@@ -142,10 +159,88 @@ const displayGameTile = (player, x, y) => {
     };
   }
 
+  if (placeShips) {
+    element.ondragover = (e) => {
+      e.preventDefault();
+      if (player.gameboard.isValidPosition(new Ship(0), x, y, false)) {
+        element.classList.add('bg-blue-200');
+      } else {
+        element.classList.add('bg-red-200');
+      }
+    };
+    element.ondragleave = () => {
+      element.classList.remove('bg-blue-200');
+      element.classList.remove('bg-red-200');
+    }
+    element.ondrop = () => {
+      player.gameboard.placeShip(new Ship(0), x, y, false);
+      document.getElementById('game').parentNode.replaceChild(displayGame(theGame), document.getElementById('game')); // eslint-disable-line
+    } 
+
+  }
+
   return element;
 };
 
-const displayGameBoard = (player) => {
+const displayShipTile = () => {
+  const element = createHtmlElement(
+    'div',
+    null,
+    [
+      'font-["PressStart2P"]',
+      'bg-white',
+      'flex',
+      'w-8',
+      'h-8',
+      'border',
+      'border-slate-500',
+      'text-black',
+      'items-center',
+      'justify-center',
+    ],
+    null
+  );
+
+  return element;
+}
+
+const displayShip = (ship, isHorizontal = true) => {
+  const element = createHtmlElement(
+    'div',
+    ship.type,
+    ['flex', 'w-min', 'items-center', 'justify-center'],
+    null
+  );
+  
+  element.setAttribute("draggable", "true");
+
+  if (isHorizontal) {
+    element.classList.add('flex-row');
+  } else {
+    element.classList.add('flex-col');
+  }
+
+  for (let i = 0; i < ship.length; i += 1) {
+    element.appendChild(displayShipTile());
+  }
+
+  return element;
+}
+
+const displayShipContainer = (ship, isHorizontal = true) => {
+  const element = createHtmlElement(
+    'div',
+    null,
+    ['flex', 'w-80', 'items-center', 'justify-center'],
+    null
+  );
+
+  element.appendChild(displayShip(ship, isHorizontal));
+  return element;
+}
+
+
+const displayGameBoard = (player, placeShips = false) => {
   const playerIndex = theGame.players.findIndex((p) => p === player);
   let gameBoardId = 'gameboard';
   gameBoardId += playerIndex;
@@ -157,23 +252,22 @@ const displayGameBoard = (player) => {
     null
   );
 
-  element.appendChild(displayGameBoardTitle(player));
+  if (placeShips === true) {
+    element.appendChild(displayGameBoardTitle("Place Ships", true))
+  } else {
+    element.appendChild(displayGameBoardTitle(player.name));
+  }  
 
   for (let i = 0; i < player.gameboard.board.length; i += 1) {
     for (let j = 0; j < player.gameboard.board[0].length; j += 1) {
-      element.appendChild(displayGameTile(player, j, i));
+      element.appendChild(displayGameTile(player, j, i, placeShips));
     }
   }
 
   return element;
 };
 
-const redrawGameBoard = (player, id) => {
-  const theBoard = document.getElementById(id);
-  theBoard.parentNode.replaceChild(displayGameBoard(player), theBoard);
-};
-
-const displayGame = (game) => {
+const displayGame = (game, placeShips = false) => {
   theGame = game;
   const element = createHtmlElement(
     'div',
@@ -182,8 +276,9 @@ const displayGame = (game) => {
     null
   );
 
-  element.appendChild(displayGameBoard(theGame.players[1]));
-  element.appendChild(displayGameBoard(theGame.players[0]));
+  if (placeShips) element.appendChild(displayShipContainer(new Ship(0), false));
+  if (!placeShips) element.appendChild(displayGameBoard(theGame.players[1]));
+  element.appendChild(displayGameBoard(theGame.players[0], placeShips));
 
   // element.appendChild(displayGameOverModal());
 
