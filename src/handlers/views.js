@@ -29,7 +29,7 @@ const mainLayout = () => {
   initGame();
 
   element.appendChild(displayHeader());
-  element.appendChild(displayGame(game));
+  element.appendChild(displayGame(game, true));
 
   return element;
 };

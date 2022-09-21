@@ -3,15 +3,12 @@ import {displayGame, displayGameOverModal,redrawGameBoard} from '../views/displa
 
 let game; //eslint-disable-line
 
-const placeRandomShips = () => {
-  // for now place random ships
-  game.players.forEach((player) => game.placeRandomShips(player));
-};
-
 const initGame = () => {
   game = new Game();
   game.players[0].setTurn(game.players[1]);
-  placeRandomShips();
+
+  // place enemy ships
+  game.placeRandomShips(game.players[1]);
   return game;
 };
 
@@ -33,4 +30,4 @@ const newTurn = (player) => {
   }
 };
 
-export { initGame, placeRandomShips, newTurn, game };
+export { initGame, newTurn, game };
