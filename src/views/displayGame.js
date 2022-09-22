@@ -2,6 +2,7 @@
 import {initGame, newTurn, placeRandomShips} from '../components/GameController'; //eslint-disable-line
 import Ship from '../factories/shipFactory';
 import createHtmlElement from '../handlers/createHtmlElement';
+import { dragStart, dragEnd, dragOver, dragLeave, drop } from './eventHandlers';
 
 let theGame;
 
@@ -160,22 +161,12 @@ const displayGameTile = (player, x, y, placeShips = false) => {
   }
 
   if (placeShips) {
-    element.ondragover = (e) => {
-      e.preventDefault();
-      if (player.gameboard.isValidPosition(new Ship(0), x, y, false)) {
-        element.classList.add('bg-blue-200');
-      } else {
-        element.classList.add('bg-red-200');
-      }
-    };
-    element.ondragleave = () => {
-      element.classList.remove('bg-blue-200');
-      element.classList.remove('bg-red-200');
-    }
-    element.ondrop = () => {
-      player.gameboard.placeShip(new Ship(0), x, y, false);
-      document.getElementById('game').parentNode.replaceChild(displayGame(theGame), document.getElementById('game')); // eslint-disable-line
-    } 
+
+   element.addEventListener('dragover', (e) => dragOver(new Ship(0), player, x, y, false, e));
+   // element.addEventListener('touchmove', dragOver);
+
+   element.addEventListener('dragleave', dragLeave);
+   element.addEventListener('drop', (e) => drop(new Ship(0), player, x, y, false, e));
 
   }
 
@@ -214,6 +205,7 @@ const displayShip = (ship, isHorizontal = true) => {
   
   element.setAttribute("draggable", "true");
 
+
   if (isHorizontal) {
     element.classList.add('flex-row');
   } else {
@@ -223,6 +215,28 @@ const displayShip = (ship, isHorizontal = true) => {
   for (let i = 0; i < ship.length; i += 1) {
     element.appendChild(displayShipTile());
   }
+
+  element.addEventListener('touchmove', function(event) {  //eslint-disable-line
+    const touch = event.targetTouches[0];
+
+    element.classList.add('absolute');
+    element.classList.add('z-50');
+
+    element.style.left = touch.pageX - 1 + 'px'; //eslint-disable-line
+    element.style.top = touch.pageY - 1 + 'px';//eslint-disable-line
+    event.preventDefault();
+  }, false);
+
+
+  element.addEventListener('dragstart', dragStart);
+
+
+  element.addEventListener('dragend', dragEnd);
+  element.addEventListener('touchend', dragEnd);
+  element.addEventListener('touchcancel', dragEnd);
+  element.addEventListener('touchleave', dragEnd);
+
+
 
   return element;
 }
@@ -267,7 +281,7 @@ const displayGameBoard = (player, placeShips = false) => {
   return element;
 };
 
-const displayGame = (game, placeShips = false) => {
+const displayGame = (game = theGame, placeShips = false) => {
   theGame = game;
   const element = createHtmlElement(
     'div',
