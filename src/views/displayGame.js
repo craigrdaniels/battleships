@@ -2,7 +2,7 @@
 import {initGame, newTurn, placeRandomShips} from '../components/GameController'; //eslint-disable-line
 import Ship from '../factories/shipFactory';
 import createHtmlElement from '../handlers/createHtmlElement';
-import { dragStart, dragEnd, dragOver, dragLeave, drop } from './eventHandlers';
+import { dragStart, dragEnd, dragOver, dragLeave, drop } from './eventHandlers'; //eslint-disable-line
 
 let theGame;
 
@@ -70,22 +70,24 @@ const displayRotateButton = () => { //eslint-disable-line
   const element = createHtmlElement(
     'button',
     null,
-    ['font-["MaterialSymbols-Outlined"]'],
+    [
+      'flex',
+      'font-["MaterialSymbols-Outlined"]',
+      'place-self-end'
+    ],
     "rotate_right"
   );
 
   return element;
 }
 
-const displayGameBoardTitle = (title, showButton = false) => { 
+const displayGameBoardTitle = (title) => { 
   const element = createHtmlElement(
     'div',
     null,
     ['font-["PressStart2P"]', 'col-span-10', 'flex', 'justify-between'],
     title
   );
-
-  if (showButton) element.appendChild(displayRotateButton());
 
   return element;
 };
@@ -199,7 +201,13 @@ const displayShip = (ship, isHorizontal = true) => {
   const element = createHtmlElement(
     'div',
     ship.type,
-    ['flex', 'w-min', 'items-center', 'justify-center'],
+    [
+      'flex',
+      'w-min',
+      'items-center',
+      'place-self-center',
+      'justify-center'
+    ],
     null
   );
   
@@ -216,26 +224,28 @@ const displayShip = (ship, isHorizontal = true) => {
     element.appendChild(displayShipTile());
   }
 
-  element.addEventListener('touchmove', function(event) {  //eslint-disable-line
-    const touch = event.targetTouches[0];
-
-    element.classList.add('absolute');
-    element.classList.add('z-50');
-
-    element.style.left = touch.pageX - 1 + 'px'; //eslint-disable-line
-    element.style.top = touch.pageY - 1 + 'px';//eslint-disable-line
-    event.preventDefault();
-  }, false);
-
-
   element.addEventListener('dragstart', dragStart);
-
-
   element.addEventListener('dragend', dragEnd);
-  element.addEventListener('touchend', dragEnd);
-  element.addEventListener('touchcancel', dragEnd);
-  element.addEventListener('touchleave', dragEnd);
 
+  return element;
+}
+
+const displayShipTitle = (ship) => {
+  const element = createHtmlElement(
+    'div',
+    null,
+    [
+      'grid',
+      'grid-rows-1',
+      'grid-cols-2',
+      'font-["PressStart2P"]',
+      'w-full',
+      'place-self-end'
+    ],
+    '&nbsp;'
+  )
+  element.innerHTML = ship.type;
+  element.appendChild(displayRotateButton());
 
 
   return element;
@@ -245,14 +255,15 @@ const displayShipContainer = (ship, isHorizontal = true) => {
   const element = createHtmlElement(
     'div',
     null,
-    ['flex', 'w-80', 'items-center', 'justify-center'],
+    ['grid', 'h-80', 'w-80'],
     null
   );
 
   element.appendChild(displayShip(ship, isHorizontal));
+  element.appendChild(displayShipTitle(ship));
+  
   return element;
 }
-
 
 const displayGameBoard = (player, placeShips = false) => {
   const playerIndex = theGame.players.findIndex((p) => p === player);
