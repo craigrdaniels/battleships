@@ -1,7 +1,8 @@
-import { displayGame } from '../views/displayGame';
+// import { displayGame } from '../views/displayGame';
 import displayHeader from '../views/displayHeader';
 import createHtmlElement from './createHtmlElement';
-import { initGame, game } from '../components/GameController';
+import { initGame, createFleet, game} from '../components/GameController';
+import { displayGame } from '../views/displayGame';
 
 const getElement = (selector, parentNode = document) =>
   parentNode.querySelector(selector);
@@ -29,7 +30,7 @@ const mainLayout = () => {
   initGame();
 
   element.appendChild(displayHeader());
-  element.appendChild(displayGame(game, true));
+  element.appendChild(displayGame(game, createFleet()));
 
   return element;
 };

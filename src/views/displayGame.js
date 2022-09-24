@@ -1,10 +1,10 @@
-// import Game from "../factories/gameFactory";
 import {initGame, newTurn, placeRandomShips} from '../components/GameController'; //eslint-disable-line
 import Ship from '../factories/shipFactory';
 import createHtmlElement from '../handlers/createHtmlElement';
 import { dragStart, dragEnd, dragOver, dragLeave, drop } from './eventHandlers'; //eslint-disable-line
 
 let theGame;
+let theFleet = [];
 
 const redrawGameBoard = (player, id) => {
   const theBoard = document.getElementById(id);
@@ -66,7 +66,7 @@ const displayGameOverModal = () => {
   };
 };
 
-const displayRotateButton = () => { //eslint-disable-line
+const displayRotateButton = (ship) => { //eslint-disable-line
   const element = createHtmlElement(
     'button',
     null,
@@ -77,6 +77,12 @@ const displayRotateButton = () => { //eslint-disable-line
     ],
     "rotate_right"
   );
+
+  element.onclick = () => {
+    ship.rotate();
+    document.getElementById('placeship').parentElement.replaceChild(displayShip(ship), document.getElementById('placeship')); //eslint-disable-line
+
+  }
 
   return element;
 }
@@ -164,11 +170,9 @@ const displayGameTile = (player, x, y, placeShips = false) => {
 
   if (placeShips) {
 
-   element.addEventListener('dragover', (e) => dragOver(new Ship(0), player, x, y, false, e));
-   // element.addEventListener('touchmove', dragOver);
-
+   element.addEventListener('dragover', (e) => dragOver(new Ship(0), player, x, y, true, e));
    element.addEventListener('dragleave', dragLeave);
-   element.addEventListener('drop', (e) => drop(new Ship(0), player, x, y, false, e));
+   element.addEventListener('drop', (e) => drop(new Ship(0), player, x, y, true, e));
 
   }
 
@@ -197,10 +201,10 @@ const displayShipTile = () => {
   return element;
 }
 
-const displayShip = (ship, isHorizontal = true) => {
+const displayShip = (ship) => {
   const element = createHtmlElement(
     'div',
-    ship.type,
+    'placeship',
     [
       'flex',
       'w-min',
@@ -214,7 +218,7 @@ const displayShip = (ship, isHorizontal = true) => {
   element.setAttribute("draggable", "true");
 
 
-  if (isHorizontal) {
+  if (ship.isHorizontal) {
     element.classList.add('flex-row');
   } else {
     element.classList.add('flex-col');
@@ -245,13 +249,13 @@ const displayShipTitle = (ship) => {
     '&nbsp;'
   )
   element.innerHTML = ship.type;
-  element.appendChild(displayRotateButton());
+  element.appendChild(displayRotateButton(ship));
 
 
   return element;
 }
 
-const displayShipContainer = (ship, isHorizontal = true) => {
+const displayShipContainer = (fleet) => {
   const element = createHtmlElement(
     'div',
     null,
@@ -259,7 +263,10 @@ const displayShipContainer = (ship, isHorizontal = true) => {
     null
   );
 
-  element.appendChild(displayShip(ship, isHorizontal));
+  const ship = fleet.shift();
+  console.log(ship); //eslint-disable-line
+
+  element.appendChild(displayShip(ship));
   element.appendChild(displayShipTitle(ship));
   
   return element;
@@ -292,8 +299,9 @@ const displayGameBoard = (player, placeShips = false) => {
   return element;
 };
 
-const displayGame = (game = theGame, placeShips = false) => {
+const displayGame = (game = theGame, fleet = theFleet) => {
   theGame = game;
+  theFleet = fleet;
   const element = createHtmlElement(
     'div',
     'game',
@@ -301,13 +309,12 @@ const displayGame = (game = theGame, placeShips = false) => {
     null
   );
 
-  if (placeShips) element.appendChild(displayShipContainer(new Ship(0), false));
-  if (!placeShips) element.appendChild(displayGameBoard(theGame.players[1]));
-  element.appendChild(displayGameBoard(theGame.players[0], placeShips));
 
-  // element.appendChild(displayGameOverModal());
+  if (fleet.length > 0) element.appendChild(displayShipContainer(fleet));
+  if (fleet.length === 0) element.appendChild(displayGameBoard(theGame.players[1]));
+  element.appendChild(displayGameBoard(theGame.players[0], true));
 
   return element;
 };
 
-export { displayGame, displayGameOverModal, redrawGameBoard };
+export { displayGame, displayGameOverModal, redrawGameBoard, displayShip };

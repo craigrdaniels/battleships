@@ -5,6 +5,11 @@ class Ship {
     this.type = SHIP_TYPES[id];
     this.length = SHIP_LENGTHS[this.type];
     this.hits = [];
+    this.isHorizontal = true;
+  }
+
+  rotate() {
+    this.isHorizontal = !this.isHorizontal;
   }
 
   hit(index) {

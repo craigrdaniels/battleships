@@ -1,5 +1,7 @@
 import Game from '../factories/gameFactory';
+import Ship from '../factories/shipFactory';
 import {displayGame, displayGameOverModal,redrawGameBoard} from '../views/displayGame'; //eslint-disable-line
+import { SHIP_TYPES } from './Ships';
 
 let game; //eslint-disable-line
 
@@ -11,6 +13,16 @@ const initGame = () => {
   game.placeRandomShips(game.players[1]);
   return game;
 };
+
+const createFleet = () => {
+  const fleet = [];
+  SHIP_TYPES.forEach((shipType, index) => { //eslint-disable-line
+    const ship = new Ship(index);
+    fleet.push(ship);
+  });
+  return fleet;
+}
+
 
 const newTurn = (player) => {
   if (player.isAI === true) {
@@ -30,4 +42,4 @@ const newTurn = (player) => {
   }
 };
 
-export { initGame, newTurn, game };
+export { initGame, newTurn, createFleet, game };
