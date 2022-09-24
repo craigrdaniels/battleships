@@ -1,5 +1,4 @@
-import {initGame, newTurn, placeRandomShips} from '../components/GameController'; //eslint-disable-line
-import Ship from '../factories/shipFactory';
+import {initGame, newTurn, createFleet} from '../components/GameController'; //eslint-disable-line
 import createHtmlElement from '../handlers/createHtmlElement';
 import { dragStart, dragEnd, dragOver, dragLeave, drop } from './eventHandlers'; //eslint-disable-line
 
@@ -59,7 +58,7 @@ const displayGameOverModal = () => {
   window.onclick = (event) => {
     if (event.target === element) {
       theGame = initGame();
-      // const game = document.getElementById('game');
+      theFleet = createFleet();
       document.getElementById('game').parentNode.replaceChild(displayGame(theGame), document.getElementById('game')); // eslint-disable-line
       document.body.removeChild(element);
     }
@@ -170,9 +169,9 @@ const displayGameTile = (player, x, y, placeShips = false) => {
 
   if (placeShips) {
 
-   element.addEventListener('dragover', (e) => dragOver(new Ship(0), player, x, y, true, e));
+   element.addEventListener('dragover', (e) => dragOver(player, x, y, e));
    element.addEventListener('dragleave', dragLeave);
-   element.addEventListener('drop', (e) => drop(new Ship(0), player, x, y, true, e));
+   element.addEventListener('drop', (e) => drop(player, x, y, e));
 
   }
 
@@ -228,7 +227,7 @@ const displayShip = (ship) => {
     element.appendChild(displayShipTile());
   }
 
-  element.addEventListener('dragstart', dragStart);
+  element.addEventListener('dragstart', (e) => dragStart(ship, e));
   element.addEventListener('dragend', dragEnd);
 
   return element;
@@ -264,7 +263,6 @@ const displayShipContainer = (fleet) => {
   );
 
   const ship = fleet.shift();
-  console.log(ship); //eslint-disable-line
 
   element.appendChild(displayShip(ship));
   element.appendChild(displayShipTitle(ship));
@@ -309,9 +307,8 @@ const displayGame = (game = theGame, fleet = theFleet) => {
     null
   );
 
-
-  if (fleet.length > 0) element.appendChild(displayShipContainer(fleet));
   if (fleet.length === 0) element.appendChild(displayGameBoard(theGame.players[1]));
+  if (fleet.length > 0) element.appendChild(displayShipContainer(fleet));
   element.appendChild(displayGameBoard(theGame.players[0], true));
 
   return element;
