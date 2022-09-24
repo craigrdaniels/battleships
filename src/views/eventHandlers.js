@@ -1,8 +1,10 @@
+import Ship from "../factories/shipFactory";
+import { SHIP_TYPES } from "../components/Ships";
 import { displayGame } from "./displayGame"; //eslint-disable-line
 
-const dragStart = (e) => {
+const dragStart = (ship, e) => {
   e.dataTransfer.effectAllowed = 'move';
-  e.dataTransfer.setData('text/plain', e.target.id);
+  e.dataTransfer.setData('text/plain', JSON.stringify(ship));
   e.dataTransfer.setDragImage(e.target,0,0);
   setTimeout(() => e.target.classList.add('opacity-50'), 0);
 
@@ -13,9 +15,10 @@ const dragEnd = (e) => {
   e.target.classList.remove('opacity-50');
 }
 
-const dragOver = (ship, player, x, y, isHorizontal, e) => {
+const dragOver = (player, x, y, e) => {
   e.preventDefault();
-  if (player.gameboard.isValidPosition(ship, x, y, isHorizontal)) {
+  const ship = JSON.parse(e.dataTransfer.getData('text/plain')); 
+  if (player.gameboard.isValidPosition(ship, x, y, ship.isHorizontal)) {
     e.target.classList.add('bg-blue-200');
   } else {
     e.target.classList.add('bg-red-200');
@@ -28,11 +31,12 @@ const dragLeave = (e) => {
   e.target.classList.remove('bg-red-200');
 }
 
-const drop = (ship, player, x, y, isHorizontal, e) => {
+const drop = (player, x, y, e) => {
   e.preventDefault();
   dragLeave(e);
-  if (player.gameboard.isValidPosition(ship, x, y, isHorizontal)) {
-    player.gameboard.placeShip(ship, x, y, isHorizontal);
+  const ship = JSON.parse(e.dataTransfer.getData('text/plain'));
+  if (player.gameboard.isValidPosition(ship, x, y, ship.isHorizontal)) {
+    player.gameboard.placeShip(new Ship(SHIP_TYPES.indexOf(ship.type)), x, y, ship.isHorizontal);
     document.getElementById('game').parentNode.replaceChild(displayGame(), document.getElementById('game'));
   }
 }
